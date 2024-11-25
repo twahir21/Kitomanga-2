@@ -1,7 +1,7 @@
 // middlewares/passport.js
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { database } = require('../models/database'); // Adjust path as needed
 
 // Define the local strategy
