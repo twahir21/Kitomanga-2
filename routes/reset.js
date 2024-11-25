@@ -1,6 +1,5 @@
 const express = require('express');
 const resetRouter = express.Router();
-require('dotenv').config();
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const { body, validationResult } = require('express-validator');
