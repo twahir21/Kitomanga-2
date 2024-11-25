@@ -10,7 +10,6 @@ const cookieParser = require('cookie-parser');
 
 
 
-dotenv.config();
 
 // Import Middlewares
 const { sessionMiddleware } = require('./middlewares/session');
@@ -130,6 +129,6 @@ process.on('SIGTERM', shutdown); // Handle termination signal
 
 
 // Start the HTTPS server
-httpsServer.listen(process.env.PORT, '0.0.0.0', () => {
+httpsServer.listen(PORT, '0.0.0.0', () => {
     console.log(`HTTPS server running on https://localhost:${PORT}`);
   });
