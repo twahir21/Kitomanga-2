@@ -130,6 +130,6 @@ process.on('SIGTERM', shutdown); // Handle termination signal
 
 
 // Start the HTTPS server
-httpsServer.listen(PORT || 3000, '0.0.0.0', () => {
+httpsServer.listen(process.env.PORT, '0.0.0.0', () => {
     console.log(`HTTPS server running on https://localhost:${PORT}`);
   });
