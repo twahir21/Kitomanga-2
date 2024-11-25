@@ -3,7 +3,7 @@ const signupRouter = express.Router();
 
 const crypto = require('crypto');
 const { body, validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { database } = require('../models/database');
 const nodemailer = require('nodemailer');
 
