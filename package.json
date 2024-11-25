@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "\"Kitomanga Online Store\"",
   "main": "server.js",
-  "scripts": {
-        "start": "node server.js",
+    "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "author": "Twahir Sudy",
   "license": "ISC",
