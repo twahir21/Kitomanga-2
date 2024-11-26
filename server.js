@@ -1,20 +1,16 @@
 const express = require('express');
-const https = require('https');
-const fs = require('fs');
+const http = require('http'); // Use HTTP instead of HTTPS
 const path = require('path');
 const bodyParser = require('body-parser');
-const compression = require('compression'); // Optional if using compression
+const compression = require('compression');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
-
-
-
 
 // Import Middlewares
 const { sessionMiddleware } = require('./middlewares/session');
 const { limiter } = require('./middlewares/rateLimit');
 const { securityMiddleware, nonceMiddleware } = require('./middlewares/security');
-const {passport} = require('./middlewares/passport');
+const { passport } = require('./middlewares/passport');
 
 // Import Routes
 const shopRouter = require('./routes/shop');
@@ -30,7 +26,7 @@ const admin = require('./routes/adminRoute');
 const logoutRouter = require('./routes/logout');
 const cartRouter = require('./routes/cart');
 const updateDetails = require('./routes/updateDetails');
-const salesGraph = require('./routes/salesGraph')
+const salesGraph = require('./routes/salesGraph');
 const viewPdf = require('./routes/pdf');
 
 // Initialize Express App
@@ -43,15 +39,13 @@ app.use(passport.session());
 
 app.use(flash());
 
-// **Make Flash Messages Available in All Templates**
+// Make Flash Messages Available in All Templates
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
     next();
 });
-
-
 
 app.use(cookieParser());
 app.use(express.json());
@@ -70,21 +64,7 @@ app.set('views', path.join(__dirname, 'views'));
 // Database Connection
 const { database } = require('./models/database');
 
-
-
-// Path to your SSL certificate and key
-const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
-};
-
-const PORT = process.env.PORT;
-const httpsServer = https.createServer(options, app);
-
-
-// Routes Setup
-
-//admin routes
+// Use Routes
 app.use('/admin', addProductRouter);
 app.use('/admin', productDetailsRouter);
 app.use('/admin', updateDetails);
@@ -92,17 +72,13 @@ app.use('/admin', admin);
 app.use(salesGraph);
 app.use('/admin', viewPdf);
 
-
-// auth routers 
 app.use(loginRoute);
 app.use(signupRouter);
 app.use(resetRouter);
 app.use(cartRouter);
-
-//public routes
-app.use(shopRouter)
+app.use(shopRouter);
 app.use(emailRouter);
-app.use(displayDetailsRouter)
+app.use(displayDetailsRouter);
 app.use(logoutRouter);
 
 app.get('/view-invoice', (req, res) => {
@@ -112,9 +88,7 @@ app.use(publicRouter);
 
 app.set('trust proxy', 1); // Trust the first proxy
 
-
-
-// Graceful Shutdown (to handle nice closing of database)
+// Graceful Shutdown
 const shutdown = async () => {
     console.log('Closing database connection pool...');
     await database.end();
@@ -125,9 +99,8 @@ const shutdown = async () => {
 process.on('SIGINT', shutdown); // Handle Ctrl+C
 process.on('SIGTERM', shutdown); // Handle termination signal
 
-
-
-// Start the HTTPS server
-httpsServer.listen(PORT, '0.0.0.0', () => {
-    console.log(`HTTPS server running on https://localhost:${PORT}`);
-  });
+// Start the HTTP Server
+const PORT = process.env.PORT || 3000;
+http.createServer(app).listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
+});
