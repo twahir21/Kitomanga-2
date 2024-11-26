@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const compression = require('compression'); // Optional if using compression
-const dotenv = require('dotenv');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 
